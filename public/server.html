@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Control de Aulas</title>
+</head>
+<body>
+  <h1>Control de Aulas Server</h1>
+  <button onclick="playAudio()">Reproducir Audio</button>
+  <button onclick="stopAudio()">Detener Audio</button>
+  <button onclick="playVideo()">Reproducir Video</button>
+  <div id="status"></div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const statusElement = document.getElementById('status');
+
+    function playAudio() {
+      socket.emit('playAudio');
+    }
+
+    function stopAudio() {
+      socket.emit('stopAudio');
+    }
+
+    function playVideo() {
+      socket.emit('playVideo');
+    }
+
+    // Manejo de eventos para mostrar el estado de la reproducción
+    socket.on('audioPlayed', (message) => {
+      statusElement.innerText = message;
+    });
+
+    socket.on('audioStoped', (message) => {
+      statusElement.innerText = message;
+    });
+
+    socket.on('videoPlayed', (message) => {
+      statusElement.innerText = message;
+    });
+  </script>
+</body>
+</html>
